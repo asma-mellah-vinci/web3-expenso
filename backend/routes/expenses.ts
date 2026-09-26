@@ -4,9 +4,9 @@ import type { Expense } from "../types/Expense.ts";
 
 const router = Router();
 
-router.get("/expenses", (_req, res) => {
+router.get("/expenses", async (_req, res) => {
     try {
-        const expenses = getAllExpenses();
+        const expenses = await getAllExpenses();
         return res.status(200).json(expenses);
     } catch (error) {
         console.log(error);
@@ -15,10 +15,10 @@ router.get("/expenses", (_req, res) => {
 });
 
 
-router.post("/expenses",(req, res ) => {
+router.post("/expenses", async (req, res ) => {
     try {
         const body : Expense = req.body;
-        const expense = addExpense(body);
+        const expense = await  addExpense(body);
         return res.status(201).json(expense);
     } catch (error) {
         console.log(error);

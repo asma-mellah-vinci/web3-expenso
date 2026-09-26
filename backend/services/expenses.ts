@@ -1,24 +1,25 @@
 import type { Expense } from "../types/Expense.ts";
+import { db } from "../src/prisma/db.ts";
 
 import fs from "node:fs";
 const dataPath = "./data/expenses.json";
 const dataInitPath = "./data/expenses.init.json";
 
 
-function getAllExpenses() : Expense[] {
-    const data = fs.readFileSync(dataPath, "utf-8");
-    const expenses : Expense[] = JSON.parse(data);
+async function getAllExpenses() {
+    const expenses = await db.orm.public.Expense.all();
     return expenses;
 }
 
 
-function addExpense(expense : Expense) : Expense {
-    const expenses = getAllExpenses();
-
-    expenses.push(expense);
-
-    fs.writeFileSync(dataPath, JSON.stringify(expenses, null, 2));
-    return expense;
+async function addExpense(expense : Expense) {
+    const newExpense = await db.orm.public.Expense.create({
+        date : expense.date,
+        description : expense.description,
+        payer       : expense.payer,
+        amount      : expense.amount,
+    });
+    return newExpense;
 }
 
 function resetExpenses() : Expense[] {

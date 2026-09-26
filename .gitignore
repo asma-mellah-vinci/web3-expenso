@@ -11,3 +11,6 @@ dist/
 
 # Logs
 *.log
+
+#PostgreSQL local data
+data/
