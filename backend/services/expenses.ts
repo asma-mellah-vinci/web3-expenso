@@ -1,4 +1,4 @@
-import type { Expense } from "../types/Expense.ts";
+import type { Expense, ExpenseInput } from "../types/Expense.ts";
 import { db } from "../src/prisma/db.ts";
 
 import fs from "node:fs";
@@ -12,7 +12,7 @@ async function getAllExpenses() {
 }
 
 
-async function addExpense(expense : Expense) {
+async function addExpense(expense : ExpenseInput) {
     const newExpense = await db.orm.public.Expense.create({
         date : expense.date,
         description : expense.description,

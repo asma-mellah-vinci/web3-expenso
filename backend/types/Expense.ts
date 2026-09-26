@@ -1,5 +1,5 @@
 export interface Expense {
-    id          : string;
+    id          : number;
     date        : string;
     description : string;
     payer       : string;
@@ -7,4 +7,6 @@ export interface Expense {
 }
 
 
-export default Expense
+export type ExpenseInput = Omit<Expense, "id">;
+
+export default Expense;

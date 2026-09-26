@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { addExpense, getAllExpenses, resetExpenses } from "../services/expenses.ts";
-import type { Expense } from "../types/Expense.ts";
+import type { Expense, ExpenseInput } from "../types/Expense.ts";
 
 const router = Router();
 
@@ -17,7 +17,7 @@ router.get("/expenses", async (_req, res) => {
 
 router.post("/expenses", async (req, res ) => {
     try {
-        const body : Expense = req.body;
+        const body : ExpenseInput = req.body;
         const expense = await  addExpense(body);
         return res.status(201).json(expense);
     } catch (error) {

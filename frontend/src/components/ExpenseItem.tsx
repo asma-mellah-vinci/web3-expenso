@@ -1,18 +1,18 @@
-import type { Expense } from "../types";
+import type { Expense } from "../types/Expense";
 
 interface ExpenseItemProps {
-    expense : Expense
+  expense: Expense;
 }
 
-const ExpenseItem = ({expense} : ExpenseItemProps) => {
-    return (
-        <div>
-            <p>{expense.date}</p>
-            <p>{expense.description}</p>
-            <p>{expense.payer}</p>
-            <p>${expense.amount}</p>
-        </div>
-    );
+const ExpenseItem = ({ expense }: ExpenseItemProps) => {
+  return (
+    <div>
+      <p>{expense.date}</p>
+      <p>{expense.description}</p>
+      <p>{expense.payer}</p>
+      <p>${expense.amount}</p>
+    </div>
+  );
 };
 
-export default ExpenseItem
+export default ExpenseItem;
