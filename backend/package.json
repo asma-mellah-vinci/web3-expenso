@@ -6,14 +6,15 @@
   "engines": {
     "node": "24.x"
   },
-"scripts": {
-  "dev": "node --watch app.ts",
-  "start": "node app.ts",
-  "typecheck": "tsc --noEmit",
-  "contract:emit": "prisma contract emit",
-  "build": "npm install && npx prisma contract emit && npx prisma db update"
-},
+  "scripts": {
+    "dev": "node --watch app.ts",
+    "start": "node app.ts",
+    "typecheck": "tsc --noEmit",
+    "contract:emit": "prisma contract emit",
+    "build": "npm install && npx prisma contract emit && npx prisma db update"
+  },
   "dependencies": {
+    "@js-temporal/polyfill": "^0.5.1",
     "@prisma/orm-postgres": "^8.0.0-rc.12",
     "cors": "^2.8.6",
     "dotenv": "^18.0.4",
