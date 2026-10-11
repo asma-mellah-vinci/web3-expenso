@@ -1,23 +1,29 @@
 import type { ExpenseInput } from "../types/Expense";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface ExpenseAddProps {
   addExpense: (expense: ExpenseInput) => void;
 }
 
-type FormData = {
-  payer: string;
-  date: string;
-  description: string;
-  amount: number;
-};
+const expenseSchema = z.object({
+  payer : z.enum(["Alice", "Bob"]),
+  date  : z.string().min(1, "Date obligatoire"),
+  description : z.string().max(200, "Maximum 200 caractères"),
+  amount : z.number().positive("Le montant doit etre supérieur à 0"),
+})
+
+type FormData = z.infer<typeof expenseSchema>;
 
 const ExpenseAdd = ({ addExpense }: ExpenseAddProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    resolver: zodResolver(expenseSchema),
+  });
 
   const onSubmit = (data: FormData) => {
     addExpense(data);
@@ -31,17 +37,17 @@ const ExpenseAdd = ({ addExpense }: ExpenseAddProps) => {
           <option value="Alice">Alice</option>
           <option value="Bob">Bob</option>
         </select>
-        {errors.payer && <span>PAYER FIELD IS REQUIRED</span>}
+        {errors.payer && <span>{errors.payer.message}</span>}
       </div>
       <div>
         <label>Date :</label>
         <input type="date" {...register("date", { required: true })} />
-        {errors.date && <span>DATE FIELD IS REQUIRED</span>}
+        {errors.date && <span>{errors.date.message}</span>}
       </div>
       <div>
         <label>Description</label>
-        <input type="text" {...register("description", { required: true })} />
-        {errors.description && <span>DESCRIPTION FIELD IS REQUIRED</span>}
+        <input type="text" {...register("description")} />
+        {errors.description && <span>{errors.description.message}</span>}
       </div>
       <div>
         <label>Amount :</label>
@@ -49,7 +55,7 @@ const ExpenseAdd = ({ addExpense }: ExpenseAddProps) => {
           type="number"
           {...register("amount", { required: true, valueAsNumber: true })}
         ></input>
-        {errors.amount && <span>AMOUNT FIELD IS REQUIRED</span>}
+        {errors.amount && <span>{errors.amount.message}</span>}
       </div>
       <button type="submit">ADD</button>
     </form>
