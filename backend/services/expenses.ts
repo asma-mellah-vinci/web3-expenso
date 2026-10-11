@@ -13,10 +13,18 @@ async function getAllExpenses() {
 
 
 async function addExpense(expense : ExpenseInput) {
+    const users = await db.orm.public.User.all();
+    const user  = users.find(u => u.name === expense.payer);
+
+    if(!user){
+        throw new Error("Utilisateur introuvable");
+    }
+
+
     const newExpense = await db.orm.public.Expense.create({
         date : expense.date,
         description : expense.description,
-        payer       : expense.payer,
+        payerId     : user.id,
         amount      : expense.amount,
     });
     return newExpense;
