@@ -33,6 +33,12 @@ async function main() {
       amount: 2,
     },
     ]);
+
+    await db.orm.public.Transfer.create({
+      amount : 10,
+      sourceId : alice.id,
+      targetId : bob.id
+    });
 }
 
 

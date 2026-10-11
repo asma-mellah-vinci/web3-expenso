@@ -37,7 +37,7 @@ model User {
 model Transfer {
   id Int @id @default(autoincrement())
   amount Float
-  date   DateTime @default(now())
+  date TimestamptzString @default(now())
   source User @relation("UserTransfersSource", fields: [sourceId], references: [id])
   sourceId Int
   target User @relation("UserTransfersTarget", fields: [targetId], references: [id])
