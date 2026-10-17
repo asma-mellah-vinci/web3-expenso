@@ -1,12 +1,27 @@
 import { Router } from "express";
 import { addExpense, getAllExpenses, resetExpenses } from "../services/expenses.ts";
-import type { Expense, ExpenseInput } from "../types/Expense.ts";
+
+// VERIFIER LES PARAMETRE
+import { z } from "zod";
 
 const router = Router();
 
-router.get("/expenses", async (_req, res) => {
+router.get("/expenses", async (req, res) => {
     try {
-        const expenses = await getAllExpenses();
+
+        const schema = z.object({
+            amount  : z.coerce.number().nonnegative().optional(),
+            payerId : z.coerce.number().int().positive().optional(),
+            categoryId : z.coerce.number().int().positive().optional()
+        });
+
+        const result = schema.safeParse(req.query);
+
+        if(!result.success){
+            return res.status(400).json({error : "Paramètres de recherche invalides"});
+        }
+
+        const expenses = await getAllExpenses(result.data);
         return res.status(200).json(expenses);
     } catch (error) {
         console.log(error);
@@ -17,8 +32,22 @@ router.get("/expenses", async (_req, res) => {
 
 router.post("/expenses", async (req, res ) => {
     try {
-        const body : ExpenseInput = req.body;
-        const expense = await  addExpense(body);
+
+        const schema = z.object({
+            date: z.string().min(1),
+            description: z.string().min(1),
+            payer: z.string().min(1),
+            amount: z.number().positive(),
+            categoryId: z.number().int().positive().nullable().optional()
+        });
+
+        const result = schema.safeParse(req.body);
+
+        if(!result.success){
+            return res.status(400).json({error : "Données de dépense invalides"});
+        }
+
+        const expense = await addExpense(result.data);
         return res.status(201).json(expense);
     } catch (error) {
         console.log(error);

@@ -1,0 +1,40 @@
+
+### Toutes les dépenses
+GET http://localhost:3000/api/expenses
+
+### Dépenses de 20 euros minimum
+GET http://localhost:3000/api/expenses?amount=20
+
+### Dépenses payées par l'utilisateur 1
+GET http://localhost:3000/api/expenses?payerId=1
+
+### Dépenses de 20 euros minimum payées par l'utilisateur 1
+GET http://localhost:3000/api/expenses?amount=20&payerId=1
+
+### Montant invalide
+GET http://localhost:3000/api/expenses?amount=-5
+
+### Identifiant invalide
+GET http://localhost:3000/api/expenses?payerId=bonjour
+
+
+###
+POST http://localhost:3000/api/expenses
+Content-Type: application/json
+
+{
+  "date": "2026-10-17",
+  "description": "Courses chez Lidl",
+  "payer": "Alice",
+  "amount": 35.50,
+  "categoryId": 1
+}
+
+### Toutes les dépenses de la catégorie 1
+GET http://localhost:3000/api/expenses?categoryId=1
+
+### Dépenses de la catégorie 1 avec un montant minimum de 20
+GET http://localhost:3000/api/expenses?categoryId=1&amount=20
+
+### Combinaison des trois filtres
+GET http://localhost:3000/api/expenses?categoryId=1&amount=20&payerId=1

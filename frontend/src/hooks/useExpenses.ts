@@ -3,18 +3,48 @@ import type { Expense, ExpenseInput } from "../types/Expense";
 
 const host = import.meta.env.VITE_API_URL || "http://unknown-api-url.com";
 
+interface ExpenseFilter {
+    amount?: number;
+    payerId?: number;
+    categoryId? : number;
+}
+
 const useExpenses = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   // FETCH GET ALL
-  const fetchExpenses = async () => {
+  const fetchExpenses = async (filter : ExpenseFilter = {}) => {
     try {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`${host}/api/expenses`);
+      const params = new URLSearchParams();
+
+      if(filter.amount !== undefined){
+        params.set("amount", String(filter.amount));
+      }
+
+      if(filter.payerId !== undefined){
+        params.set("payerId", String(filter.payerId));
+      }
+
+      if(filter.categoryId !== undefined){
+        params.set("categoryId", String(filter.categoryId));
+      }
+
+
+      const query = params.toString();
+
+      let url;
+      if(query !== ""){
+        url = `${host}/api/expenses?${query}`
+      } else {
+        url = `${host}/api/expenses`
+      }
+
+      const response = await fetch(url);
 
       if (!response.ok) {
         throw new Error("Error while fetching expenses");
@@ -80,6 +110,7 @@ const useExpenses = () => {
     error,
     addExpense,
     resetExpenses,
+    fetchExpenses
   };
 };
 

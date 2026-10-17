@@ -5,10 +5,23 @@ import fs from "node:fs";
 const dataPath = "./data/expenses.json";
 const dataInitPath = "./data/expenses.init.json";
 
+interface ExpenseFilter {
+    amount?  : number;
+    payerId? : number;
+    categoryId? : number;
+}
 
-async function getAllExpenses() {
+async function getAllExpenses(filter : ExpenseFilter = {}) {
     const expenses = await db.orm.public.Expense.all();
-    return expenses;
+
+    return expenses.filter((expense) => {
+        const matchAmount = filter.amount === undefined || expense.amount >= filter.amount;
+        const matchPayer  = filter.payerId === undefined || expense.payerId === filter.payerId;
+        const matchCategory = filter.categoryId === undefined || expense.categoryId === filter.categoryId;
+
+        return matchAmount && matchPayer && matchCategory;
+    });
+
 }
 
 
@@ -26,6 +39,7 @@ async function addExpense(expense : ExpenseInput) {
         description : expense.description,
         payerId     : user.id,
         amount      : expense.amount,
+        categoryId  : expense.categoryId ?? null
     });
     return newExpense;
 }

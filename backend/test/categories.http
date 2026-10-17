@@ -1,0 +1,32 @@
+
+
+
+### GET ALL CATEGORIES
+GET http://localhost:3000/api/categories
+
+### POST ONE CATEGORY
+POST http://localhost:3000/api/categories
+Content-Type: application/json
+
+{
+  "name": "Alimentation",
+  "color": "#FF5733"
+}
+
+### Catégorie Transport
+POST http://localhost:3000/api/categories
+Content-Type: application/json
+
+{
+  "name": "Transport",
+  "color": "#3498DB"
+}
+
+### Catégorie Loisirs
+POST http://localhost:3000/api/categories
+Content-Type: application/json
+
+{
+  "name": "Loisirs",
+  "color": "#2ECC71"
+}

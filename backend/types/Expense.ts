@@ -4,6 +4,7 @@ export interface Expense {
     description : string;
     payer       : string;
     amount      : number;
+    categoryId? : number | null;
 }
 
 
