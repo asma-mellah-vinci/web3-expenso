@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import type { Category } from "../types/Category";
-import { da } from "zod/locales";
 
 const host = import.meta.env.VITE_API_URL || "http://unknown-api-url.com";
 
